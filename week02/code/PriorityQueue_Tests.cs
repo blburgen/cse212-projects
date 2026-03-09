@@ -69,7 +69,7 @@ public class PriorityQueueTests
 
     [TestMethod]
     // Scenario: Create a queue with with letters a-f
-    // and priority increasing throughout the queue
+    // and priority decreasing throughout the queue
     // Expected Result: "a", "b", "c", "d", "e", "f"
     // Defect(s) Found: skipped first item and last item.  It returned the last high priority item thaat was not the first or last item.
     // It did not remove item from queue.  Corrected the following in Dequeue(): 
@@ -94,6 +94,35 @@ public class PriorityQueueTests
             Assert.AreEqual(expectedResult[i], next);
             i++;
             count--;
+        }
+    }
+
+    [TestMethod]
+    // Scenario: Create a empty queue and try to dequeue
+    // Expected Result: InvalidOperationException with a message of "The queue is empty."
+    // Defect(s) Found: none found
+    public void TestPriorityQueue_4()
+    {
+        var priorityQueue = new PriorityQueue();
+        try
+        {
+            priorityQueue.Dequeue();
+            Assert.Fail("Exception should have been thrown.");
+        }
+        catch (InvalidOperationException e)
+        {
+            Assert.AreEqual("The queue is empty.", e.Message);
+        }
+        catch (AssertFailedException)
+        {
+            throw;
+        }
+        catch (Exception e)
+        {
+            Assert.Fail(
+                 string.Format("Unexpected exception of type {0} caught: {1}",
+                                e.GetType(), e.Message)
+            );
         }
     }
 }
