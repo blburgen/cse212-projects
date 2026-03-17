@@ -21,8 +21,22 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
+        List<string> temp = new List<string>();
+        var newset = new HashSet<string>();
+        for(var i = 0; i < words.Count(); i++)
+        {
+            string word = words[i];
+            string temp1 = word.Substring(1,1);
+            string temp2 = word.Substring(0,1);
+            string tempword = temp1 + temp2;
+            if (newset.Contains(tempword))
+            {
+                temp.Add($"{tempword} & {word}");
+            }
+            newset.Add(word);
+        }
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        return temp.ToArray();
     }
 
     /// <summary>
@@ -42,6 +56,14 @@ public static class SetsAndMaps
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
+            var degree = fields[3];
+            if (degrees.ContainsKey(degree)){
+                degrees[degree] += 1;
+            } else
+            {
+                degrees[degree] = 1;
+            }
+
             // TODO Problem 2 - ADD YOUR CODE HERE
         }
 
@@ -66,8 +88,49 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        var wordone = new Dictionary<char, int>();
+        foreach(var letters in word1)
+        {
+            char letter = char.ToLower(letters);
+            if(letter == ' ')
+            {
+                continue;
+            }
+            if (wordone.ContainsKey(letter))
+            {
+                wordone[letter] += 1;
+            } else
+            {
+                wordone[letter] = 1;
+            }
+        }
+        foreach(var letters in word2)
+        {
+            char letter = char.ToLower(letters);
+            if(letter == ' ')
+            {
+                continue;
+            }
+            if (wordone.ContainsKey(letter))
+            {
+                wordone[letter] -= 1;
+                if(wordone[letter] == 0)
+                {
+                    wordone.Remove(letter);
+                }
+            } else
+            {
+                return false;
+            }
+        }
+        if(wordone.Count == 0)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
+
     }
 
     /// <summary>
